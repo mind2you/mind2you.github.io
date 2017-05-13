@@ -1,37 +1,23 @@
-## Welcome to GitHub Pages
+# Jekyll docs site
 
-You can use the [editor on GitHub](https://github.com/mind2you/mind2you.github.io/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+This directory contains the code for the Jekyll docs site, [jekyllrb.com](https://jekyllrb.com/).
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+## Contributing
 
-### Markdown
+For information about contributing, see the [Contributing page](https://jekyllrb.com/docs/contributing/).
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+## Running locally
 
-```markdown
-Syntax highlighted code block
+You can preview your contributions before opening a pull request by running from within the directory:
 
-# Header 1
-## Header 2
-### Header 3
+1. `bundle install --without test test_legacy benchmark`
+2. `bundle exec rake site:preview`
 
-- Bulleted
-- List
+It's just a jekyll site, afterall! :wink:
 
-1. Numbered
-2. List
+## Updating Font Awesome
 
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/mind2you/mind2you.github.io/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+1. Go to <https://icomoon.io/app/>
+2. Choose Import Icons and load `icomoon-selection.json`
+3. Choose Generate Font → Download
+4. Copy the font files and adapt the CSS to the paths we use in Jekyll
