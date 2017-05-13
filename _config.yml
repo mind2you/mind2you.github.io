@@ -10,7 +10,7 @@ url: "http://mind2you.github.io" # the base hostname & protocol for your site
 # Sidebar filter
 # Choose 'tag' or 'category' as filter in sidebar.
 filter: 'tag'
-tags: [Document, About]
+tags: [About, Document]
 
 
 # Social account
