@@ -2,8 +2,8 @@
 layout: post
 title:  "开发前写一份文档"
 date:   2015-03-08 22:21:49
-categories: Docs
-tags: Document
+categories: [Docs]
+tags: [Document]
 ---
 优秀的程序员应该学会开发前写一份文档
 
