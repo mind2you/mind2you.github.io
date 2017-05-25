@@ -11,6 +11,7 @@ export JAVA_HOME=/usr/java/latest
 
 
 - **etc/hadoop/core-site.xml:**
+
 ```
 <configuration>
     <property>
@@ -19,7 +20,9 @@ export JAVA_HOME=/usr/java/latest
     </property>
 </configuration>
 ```
+
 - **etc/hadoop/hdfs-site.xml:**
+
 ```
 <configuration>
     <property>
@@ -28,6 +31,7 @@ export JAVA_HOME=/usr/java/latest
     </property>
 </configuration>
 ```
+
 ### 2.Execution
 - **Format the filesystem:**
 ``
