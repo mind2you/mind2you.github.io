@@ -1,9 +1,18 @@
+---
+layout: post
+title:  "Hadoop"
+date:   2015-03-08 22:21:49
+categories: [Hadoop]
+tags: [Hadoop]
+---
+
 # Hadoop 
 ### 1.Configuration
 
 #### Use the following:
 - **Prepare to Start the Hadoop Cluster:**
 edit the file ***etc/hadoop/hadoop-env.sh*** to define some parameters as follows:
+
 ```
 # set to the root of your Java installation
 export JAVA_HOME=/usr/java/latest

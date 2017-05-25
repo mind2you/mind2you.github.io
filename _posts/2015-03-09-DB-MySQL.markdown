@@ -1,0 +1,40 @@
+---
+layout: post
+title:  "DB-MySQL"
+date:   2015-03-08 22:21:49
+categories: [DB]
+tags: [MySQL]
+---
+
+# MySQL
+
+------------
+## 安装
+
+C:\Program Files\MySQL\MySQL Server 5.6
+
+To start the mysqld server from the command line, you should start a console window (or “DOS window”) and enter this command:
+
+``
+C:\> "C:\Program Files\MySQL\MySQL Server 5.6\bin\mysqld"``
+
+The path to mysqld may vary depending on the install location of MySQL on your system.
+
+You can stop the MySQL server by executing this command:
+
+``
+C:\> "C:\Program Files\MySQL\MySQL Server 5.6\bin\mysqladmin" -u root shutdown
+``
+
+------------
+## 修改自增值
+
+alter table users AUTO_INCREMENT=10000;
+
+
+-------------
+##  授权
+
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+
