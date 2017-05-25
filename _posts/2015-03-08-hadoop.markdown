@@ -1,0 +1,155 @@
+---
+layout: post
+title:  "Hadoop"
+date:   2015-03-08 22:21:49
+categories: [Hadoop]
+tags: [Hadoop]
+---
+
+# Hadoop 
+### 1.Configuration
+
+#### Use the following:
+- **Prepare to Start the Hadoop Cluster:**
+edit the file ***etc/hadoop/hadoop-env.sh*** to define some parameters as follows:
+
+```
+# set to the root of your Java installation
+export JAVA_HOME=/usr/java/latest
+```
+
+
+- **etc/hadoop/core-site.xml:**
+
+```
+<configuration>
+    <property>
+        <name>fs.defaultFS</name>
+        <value>hdfs://localhost:9000</value>
+    </property>
+</configuration>
+```
+
+- **etc/hadoop/hdfs-site.xml:**
+
+```
+<configuration>
+    <property>
+        <name>dfs.replication</name>
+        <value>1</value>
+    </property>
+</configuration>
+```
+
+### 2.Execution
+- **Format the filesystem:**
+``
+$ bin/hdfs namenode -format
+``
+- **Start NameNode daemon and DataNode daemon:**
+``
+$ sbin/start-dfs.sh
+``
+
+The hadoop daemon log output is written to the $HADOOP_LOG_DIR directory (defaults to $HADOOP_HOME/logs).
+
+
+- **Browse the web interface for the NameNode**; by default it is available at:
+
+    - NameNode - http://localhost:50070/
+
+### 3.FileSystemShell
+
+
+**mkdir**
+
+Usage: hadoop fs -mkdir [-p] <paths>
+
+Takes path uri’s as argument and creates directories.
+
+Options:
+
+    The -p option behavior is much like Unix mkdir -p, creating parent directories along the path.
+
+Example:
+
+    $ hadoop fs -mkdir /user/hadoop/dir1 /user/hadoop/dir2
+    $ hadoop fs -mkdir hdfs://nn1.example.com/user/hadoop/dir hdfs://nn2.example.com/user/hadoop/dir
+
+Exit Code:
+
+Returns 0 on success and -1 on error.
+
+---
+
+**mv**
+
+Usage: hadoop fs -mv URI [URI ...] <dest>
+
+Moves files from source to destination. This command allows multiple sources as well in which case the destination needs to be a directory. Moving files across file systems is not permitted.
+
+Example:
+
+    $ hadoop fs -mv /user/hadoop/file1 /user/hadoop/file2
+    $ hadoop fs -mv hdfs://nn.example.com/file1 hdfs://nn.example.com/file2 hdfs://nn.example.com/file3 hdfs://nn.example.com/dir1
+
+Exit Code:
+
+Returns 0 on success and -1 on error.
+
+---
+
+**put**
+
+Usage: hadoop fs -put <localsrc> ... <dst>
+
+Copy single src, or multiple srcs from local file system to the destination file system. Also reads input from stdin and writes to destination file system.
+
+    $ hadoop fs -put localfile /user/hadoop/hadoopfile
+    $ hadoop fs -put localfile1 localfile2 /user/hadoop/hadoopdir
+    $ hadoop fs -put localfile hdfs://nn.example.com/hadoop/hadoopfile
+    $ hadoop fs -put - hdfs://nn.example.com/hadoop/hadoopfile Reads the input from stdin.
+
+Exit Code:
+
+Returns 0 on success and -1 on error.
+
+---
+
+**rm**
+
+Usage: hadoop fs -rm [-f] [-r |-R] [-skipTrash] URI [URI ...]
+
+Delete files specified as args.
+
+If trash is enabled, file system instead moves the deleted file to a trash directory (given by FileSystem#getTrashRoot).
+
+Currently, the trash feature is disabled by default. User can enable trash by setting a value greater than zero for parameter fs.trash.interval (in core-site.xml).
+
+See expunge about deletion of files in trash.
+
+Options:
+
+    The -f option will not display a diagnostic message or modify the exit status to reflect an error if the file does not exist.
+    The -R option deletes the directory and any content under it recursively.
+    The -r option is equivalent to -R.
+    The -skipTrash option will bypass trash, if enabled, and delete the specified file(s) immediately. This can be useful when it is necessary to delete files from an over-quota directory.
+
+Example:
+
+    $ hadoop fs -rm hdfs://nn.example.com/file /user/hadoop/emptydir
+
+Exit Code:
+
+Returns 0 on success and -1 on error.
+
+	
+----------------------
+Hadoop安装完后，启动时报
+Error: JAVA_HOME is not set and could not be found.
+
+【解决办法】：修改/etc/hadoop/hadoop-env.sh中设JAVA_HOME。应当使用绝对路径。
+
+export JAVA_HOME=$JAVA_HOME //错误，不能这么改
+
+export JAVA_HOME=/usr/java/jdk1.6.0_45 //正确，应该这么改
