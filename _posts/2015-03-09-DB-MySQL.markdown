@@ -33,8 +33,67 @@ alter table users AUTO_INCREMENT=10000;
 
 
 -------------
-##  授权
+## 授权
 
 GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION;
 FLUSH PRIVILEGES;
+
+-------------
+## SQL查询的基本执行过程
+
+- 应用通过MySQL API把查询命令发送给MySQL服务器，然后被解析
+- 检查权限、MySQL optimizer进行优化，经过解析和优化后的查询命令被编译为CPU可运行的二进制形式的查询计划（query plan），并可以被缓存
+- 如果存在索引，那么先扫描索引，如果数据被索引覆盖，那么不需要额外的查找，如果不是，根据索引查找和读取对应的记录
+- 如果有关联查询，查询次序是扫描第一张表找到满足条件的记录，按照第一张表和第二张表的关联键值，扫描第二张表查找满足条件的记录，按此顺序循环
+- 输出查询结果，并记录binary logs
+
+
+
+-------------
+## SELECT_TYPE
+
+- **SIMPLE**: 简单 SELECT (不使用UNION或子查询等)
+- **PRIMARY**: 最外层的 SELECT
+- **UNION**: UNION 中的第二个或后面的 SELECT 语句
+- **DEPENDENT UNION**: UNION 中的第二个或后面的SELECT语句，取决于外面的查询
+- **UNION RESULT**: UNION 的结果(此时 ID 为 NULL)
+- **SUBQUERY**: 子查询中的第一个 SELECT
+- **DEPENDENT SUBQUERY**: 子查询中的第一个 SELECT ，取决于外面的查询
+- **DERIVED**: 派生表的 SELECT ( FROM 子句的子查询)
+
+
+-------------
+## TYPE
+
+- **SYSTEM**: CONST的特例，当表上只有一条元组匹配
+- **CONST**: WHERE条件筛选后表上至多有一条元组匹配时，比如WHERE ID = 2 （ID是主键，值为2的要么有一条要么没有）
+- **EQ_REF**: 参与连接运算的表是内表（在代码实现的算法中，两表连接时作为循环中的内循环遍历的对象，这样的表称为内表）。基于索引（连接字段上存在唯一索引或者主键索引，且操作符必须是“=”，索引值不能为NULL）做扫描，使得对外表的一条元组，内表只有唯一一条元组与之对应。
+- **REF**: 可以用于单表扫描或者连接(参与连接运算的表是内表)，基于索引（连接字段上的索引是非唯一索引，操作符必须是“=”，连接字段值不可为NULL）做扫描，使得对外表的一条元组，内表可有若干条元组与之对应。
+- **FULLTEXT**: FULL TEXT，全文检索
+- **REF_OR_NULL**: 类似REF，只是搜索条件包括：连接字段的值可以为NULL的情况，比如 where col = 2 or col is null
+- **INDEX_MERGE**: 多重范围扫描。两表连接的每个表的连接字段上均有索引存在且索引有序，结果合并在一起。
+- **UNIQUE_SUBQUERY**: 在子查询中，基于唯一索引进行扫描，类似于EQ_REF
+- **INDEX_SUBQUERY**: 在子查询中，基于除唯一索引之外的索引进行扫描
+- **RANGE**: 范围扫描，基于索引做范围扫描，为诸如BETWEEN，IN，>=，LIKE类操作提供支持
+- **INDEX**: 索引做扫描，是基于索引在索引的叶子节点上找满足条件的数据（不需要访问数据文件）
+- **ALL**: 全表扫描或者范围扫描：不使用索引，顺序扫描，直接读取表上的数据（访问数据文件）
+
+
+-------------
+## KEY_LEN
+
+- 一般地，key_len 等于索引列类型字节长度，例如int类型为4-bytes，bigint为8-bytes；
+- 如果是字符串类型，还需要同时考虑字符集因素，例如：CHAR(30) UTF8则key_len至少是90-bytes；
+- 若该列类型定义时允许NULL，其key_len还需要再加 1-bytes；
+- 若该列类型为变长类型，例如 VARCHAR（TEXT\BLOB不允许整列创建索引，如果创建部分索引，也被视为动态列类型），其key_len还需要再加 2-bytes;
+
+
+-------------
+## EXTRA
+
+- **USING WHERE**: 使用了WHERE子句来过滤元组
+- **USING TEMPORARY**: 用临时表保存中间结果，常用于GROUP BY 和 ORDER BY操作中
+- **USING FILESORT**: 使用文件完成排序操作，这是可能是ORDERY BY，GROUP BY语句的结果
+- **USING INDEX**: 不需要读取数据文件，从索引树（索引文件）中即可获得信息
+- **DISTINCT**: 优化DISTINCT操作，在找到第一匹配的元组后即停止找同样值的动作
 
