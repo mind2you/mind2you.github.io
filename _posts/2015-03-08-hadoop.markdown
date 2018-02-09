@@ -38,8 +38,19 @@ export JAVA_HOME=/usr/java/latest
         <name>dfs.replication</name>
         <value>1</value>
     </property>
+    <property>
+        <name>dfs.namenode.name.dir</name>
+        <value>file://${hadoop.tmp.dir}/dfs/name</value>
+    </property>
+    <property>
+        <name>dfs.datanode.data.dir</name>
+        <value>file://${hadoop.tmp.dir}/dfs/data</value>
+    </property>
 </configuration>
 ```
+
+
+
 
 ### 2.Execution
 - **Format the filesystem:**
