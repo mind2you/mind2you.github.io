@@ -81,22 +81,25 @@ config下的三个文件 redis_31337.conf
 
 - Create cluster
 	执行命令
-``
+
+```
 ./redis-trib.rb create --replicas 0 192.168.137.128:31337 192.168.137.128:31338 192.168.137.128:31339	
-``
+```
 
 
 
 
 ERROR-1:若提示 increase "ulimit -n"则，以root用户登录主机
-在文件``vi /etc/security/limits.d/20-nproc.conf``添加如下行：
-``
+在文件`` /etc/security/limits.d/20-nproc.conf ``添加如下行：
+
+```
 <redis安装用户>      soft    nofile     65536
 <redis安装用户>      hard    nofile     65536
-``
+```
 
-ERROR-2:如果执行./redis-trib.rb命令报错
-确保机器有ruby的环境下，下载 redis gem，执行 ``gem install ./redis-3.2.2.gem`` 命令安装。
+
+ERROR-2:如果执行`` ./redis-trib.rb ``命令报错
+确保机器有ruby的环境下，下载 redis gem，执行 `` gem install ./redis-3.2.2.gem `` 命令安装。
 
 
 
