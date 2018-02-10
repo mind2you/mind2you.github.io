@@ -51,6 +51,7 @@ redis-3.2.8_cluster
 
 
 - 一些配置项
+
 ```
 	bind <ip>
 	port <port>
@@ -63,17 +64,20 @@ redis-3.2.8_cluster
 	cluster-enabled yes
 	
 ```
+
 参数的具体意义参考redis doc。
 config下的三个文件 redis_31337.conf
 
 
 - 运行redis instances
 如：
+
 ```
 /home/test/redis-3.2.8_cluster/redis-3.2.8/redis-server /home/test/redis-3.2.8_cluster/config/redis_31337.conf
 /home/test/redis-3.2.8_cluster/redis-3.2.8/redis-server /home/test/redis-3.2.8_cluster/config/redis_31338.conf
 /home/test/redis-3.2.8_cluster/redis-3.2.8/redis-server /home/test/redis-3.2.8_cluster/config/redis_31339.conf
 ```
+
 
 - Create cluster
 	执行命令
