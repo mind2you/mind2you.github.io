@@ -88,7 +88,7 @@ config下的三个文件 redis_31337.conf
 
 - 测试
 	
-执行命令 "./redis-cli -c -h <ip> -p <port>" 登录 redis server；之后 键入 `` cluster info `` 查看集群信息，
+执行命令 `` "./redis-cli -c -h <ip> -p <port>" `` 登录 redis server；之后 键入 `` "cluster info" `` 查看集群信息，
 如果 cluster-state显示ok，那就真的ok啦。
 举个栗子，可能会看到如下的信息，那表示是ok的:
 
