@@ -86,7 +86,28 @@ config下的三个文件 redis_31337.conf
 ./redis-trib.rb create --replicas 0 192.168.137.128:31337 192.168.137.128:31338 192.168.137.128:31339	
 ```
 
+- 测试
+	
+执行命令 "./redis-cli -c -h <ip> -p <port>" 登录 redis server；之后 键入 `` cluster info `` 查看集群信息，
+如果 cluster-state显示ok，那就真的ok啦。
+举个栗子，可能会看到如下的信息，那表示是ok的:
 
+
+```
+<ip>:<port>> cluster info
+cluster_state:ok
+cluster_slots_assigned:16384
+cluster_slots_ok:16384
+cluster_slots_pfail:0
+cluster_slots_fail:0
+cluster_known_nodes:3
+cluster_size:3
+cluster_current_epoch:3
+cluster_my_epoch:2
+cluster_stats_messages_sent:77
+cluster_stats_messages_received:77
+<ip>:<port>> keys *
+```
 
 
 ERROR-1:若提示 increase "ulimit -n"则，以root用户登录主机
