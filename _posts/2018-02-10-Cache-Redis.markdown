@@ -62,6 +62,7 @@ redis-3.2.8_cluster
 	dir <directory>
 	appendfilename <filename>
 	cluster-enabled yes
+	cluster-config-file nodes-6379.conf
 	
 ```
 
@@ -121,6 +122,19 @@ ERROR-1:若提示 increase "ulimit -n"则，以root用户登录主机
 
 ERROR-2:如果执行`` ./redis-trib.rb ``命令报错
 确保机器有ruby的环境下，下载 redis gem，执行 `` gem install ./redis-3.2.2.gem `` 命令安装。
+
+
+ERROR-3:警告：过量使用内存设置为0！在低内存环境下，后台保存可能失败。为了修正这个问题，
+请在/etc/sysctl.conf 添加一项 'vm.overcommit_memory = 1' ，
+然后重启（或者运行命令'sysctl vm.overcommit_memory=1' ）使其生效。
+   查看，sysctl -a | grep vm.overcommit_memory
+  有三种方式修改内核参数，但要有root权限：
+
+  （1）编辑/etc/sysctl.conf ，改vm.overcommit_memory=1，然后sysctl -p 使配置文件生效
+
+  （2）sysctl vm.overcommit_memory=1
+
+  （3）echo 1 > /proc/sys/vm/overcommit_memory
 
 
 

@@ -1,0 +1,168 @@
+---
+layout: post
+title:  "Hive"
+date:   2015-03-08 22:21:49
+categories: [Hadoop]
+tags: [Hive]
+---
+
+# Hadoop 
+### 1.Configuration
+
+#### Use the following:
+- **~/bash_profile**
+edit the file as follows:
+
+```
+JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.65-3.b17.el7.x86_64
+PATH=$JAVA_HOME/bin:$PATH
+
+HADOOP_HOME=/home/test/hadoop/hadoop-2.7.5
+PATH=$HADOOP_HOME/bin:$PATH
+
+HIVE_HOME=/home/test/hive/apache-hive-2.3.2
+PATH=$HIVE_HOME/bin:$PATH
+
+
+PATH=$PATH:$HOME/.local/bin:$HOME/bin
+
+export PATH
+
+```
+
+
+- **create hdfs dir:**
+
+
+```
+./hdfs dfs -mkdir /tmp
+./hdfs dfs -mkdir -p /hive/warehouse
+```
+
+
+
+- **/conf/hive-env.sh:**
+
+
+```
+HADOOP_HOME=/home/test/hadoop/hadoop-2.7.5
+
+export HIVE_CONF_DIR=/home/test/hive/apache-hive-2.3.2/conf
+
+```
+
+
+
+
+- **/conf/hive-site.xml:**
+
+use Mysql store metastore：
+```
+<configuration>
+  <property>
+    <name>hive.metastore.local</name>
+    <value>false</value>
+  </property>
+  <property>
+    <name>javax.jdo.option.ConnectionURL</name>
+    <value>jdbc:mysql://127.0.0.1:3306/hive?createDatabaseIfNotExist=true</value>
+  </property>
+  <property>
+    <name>javax.jdo.option.ConnectionDriverName</name>
+    <value>com.mysql.jdbc.Driver</value>
+  </property>
+  <property>
+    <name>javax.jdo.option.ConnectionUserName</name>
+    <value>{mysql.user}</value>
+  </property>
+  <property>
+    <name>javax.jdo.option.ConnectionPassword</name>
+    <value>{mysql.password}</value>
+  </property>
+  <property>  
+	<name>hive.metastore.warehouse.dir</name>  
+	<!--之前hdfs中创建的warehouse文件夹-->  
+	<value>/hive/warehouse</value>  
+	<description>location of default database for the warehouse</description>  
+  </property>
+  <property>
+	<name>hive.exec.scratchdir</name>
+	<!--之前在hdfs中建的tmp文件夹-->
+	<value>/tmp/hive</value>
+  </property>
+  <!-- 客户端连接 用户名和密码 -->
+  <property>
+    <name>hive.server2.thrift.client.user</name>
+    <value>test</value>
+    <description>Username to use against thrift client</description>
+  </property>
+  <property>
+    <name>hive.server2.thrift.client.password</name>
+    <value>test</value>
+    <description>Password to use against thrift client</description>
+  </property>
+</configuration>
+```
+
+
+
+
+
+### 2.Execution
+- **Init metastore:**
+``
+$ bin/schematool -dbType mysql -initSchema
+``
+- **hive:**
+
+```
+$ bin/hive 
+
+hive> show tables;
+OK
+Time taken: 4.687 seconds
+hive> create database test;
+OK
+Time taken: 0.333 seconds
+hive> show databases;
+OK
+default
+test
+Time taken: 0.055 seconds, Fetched: 2 row(s)
+hive> show tables;
+OK
+Time taken: 0.05 seconds
+hive> 
+ive> use test;
+OK
+Time taken: 0.07 seconds
+hive> create table test_1(id int, name string);
+OK
+Time taken: 0.88 seconds
+hive> show tables;
+OK
+test_1
+Time taken: 0.074 seconds, Fetched: 1 row(s)
+hive> 
+```
+
+-- **后台运行:**
+
+运行hive之前首先要确保meta store服务已经启动，
+```
+nohup hive --service metastore > metastore.log 2>&1 &
+```
+若远程客户端连接到hive数据库，需启动hive service
+```
+nohup hive --service hiveserver2 > hiveserver2.log 2>&1 &
+```
+	
+----------------------
+Hadoop安装完后，启动时报
+Error: JAVA_HOME is not set and could not be found.
+
+【解决办法】：修改/etc/hadoop/hadoop-env.sh中设JAVA_HOME。应当使用绝对路径。
+
+export JAVA_HOME=$JAVA_HOME //错误，不能这么改
+
+export JAVA_HOME=/usr/java/jdk1.6.0_45 //正确，应该这么改

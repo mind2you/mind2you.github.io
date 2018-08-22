@@ -27,6 +27,14 @@ export JAVA_HOME=/usr/java/latest
         <name>fs.defaultFS</name>
         <value>hdfs://localhost:9000</value>
     </property>
+	<property>
+        <name>hadoop.tmp.dir</name>
+        <value>file:/home/test/tmp/</value>
+    </property>
+    <property>
+        <name>ha.zookeeper.quorum</name>
+        <value>127.0.0.1:2181</value>
+    </property>
 </configuration>
 ```
 
@@ -40,14 +48,16 @@ export JAVA_HOME=/usr/java/latest
     </property>
     <property>
         <name>dfs.namenode.name.dir</name>
-        <value>file://${hadoop.tmp.dir}/dfs/name</value>
+        <value>file:/${hadoop.tmp.dir}/dfs/name</value>
     </property>
     <property>
         <name>dfs.datanode.data.dir</name>
-        <value>file://${hadoop.tmp.dir}/dfs/data</value>
+        <value>file:/${hadoop.tmp.dir}/dfs/data</value>
     </property>
 </configuration>
 ```
+
+这个value要注意,后边应该是一个"/"(如：file:/home/test/tmp)
 
 
 
